@@ -49,10 +49,8 @@ public class LocalProcessor {
     public void listIterator(List<String> stringList) throws IllegalStateException{
         try {
             if(Objects.isNull(stringList)) { throw new IllegalStateException("Input is null."); }
-            stringList.forEach(string -> {
-                    if (Objects.isNull(string)) { throw new IllegalStateException("String is null."); }
-                    System.out.println(string.hashCode());
-                }
+            stringList.forEach(string ->
+                System.out.println((Objects.nonNull(string)? string.hashCode() : ""))
             );
 
         } catch(IllegalStateException ise){
@@ -65,11 +63,7 @@ public class LocalProcessor {
     public String fullNameProcessorGenerator(List<String> stringList) throws IllegalStateException{
         try {
             if(Objects.isNull(stringList)) { throw new IllegalStateException("Input is null."); }
-            stringList.forEach(string -> {
-                    if (Objects.isNull(string)) { throw new IllegalStateException("String is null."); }
-                    processorName.append(string).append(" ");
-                }
-            );
+            stringList.forEach(string -> processorName.append(string).append(" "));
             return processorName.toString();
 
         } catch(IllegalStateException ise){
@@ -80,15 +74,32 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
-        try(Scanner informationScanner = new Scanner(file)) {
+        try(Scanner informationScanner = new Scanner(file)){
             if(Objects.isNull(informationScanner)) { throw new IllegalStateException("File is null."); }
             while (informationScanner.hasNext()) {
                 processorVersion.append(informationScanner.nextLine());
             }
 
-        } catch(IllegalStateException | FileNotFoundException e){
+        } catch(Exception e){
             logger.info(e.getMessage());
             throw new IllegalStateException(e);
+
+        }
+    }
+
+    public static void main(String[] args) {
+        LocalProcessor processor = new LocalProcessor();
+        try {
+            String fileName = "\\src\\main\\resources\\text.txt";
+            String currentDirectory = System.getProperty("user.dir");
+            File file = new File(currentDirectory, fileName);
+            String absolutePath = file.getAbsolutePath();
+
+            System.out.println("Absolute path to text.txt: " + absolutePath);
+            processor.readFullProcessorName(new File(absolutePath));
+
+        } catch(Exception e){
+            processor.logger.info(e.getMessage());
         }
     }
 }
