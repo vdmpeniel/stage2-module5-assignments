@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import assignments.annotations.FullNameProcessorGeneratorAnnotation;
 import assignments.annotations.ListIteratorAnnotation;
@@ -23,17 +24,19 @@ public class LocalProcessor {
     private Scanner informationScanner;
     private List<String> stringArrayList;
 
+    private final Logger logger = Logger.getLogger(LocalProcessor.class.getName());
+
     public LocalProcessor(
-        String processorName,
+        StringBuilder processorName,
         Long period,
-        String processorVersion,
+        StringBuilder processorVersion,
         Integer valueOfCheap,
         Scanner informationScanner,
         List<String> stringArrayList
     ) {
-        this.processorName = new StringBuilder(processorName);
+        this.processorName = processorName;
         this.period = period;
-        this.processorVersion = new StringBuilder(processorVersion);
+        this.processorVersion = processorVersion;
         this.valueOfCheap = valueOfCheap;
         this.informationScanner = informationScanner;
         this.stringArrayList = stringArrayList;
@@ -47,11 +50,11 @@ public class LocalProcessor {
         try {
             if(Objects.isNull(stringList)) { throw new IllegalStateException("Input is null."); }
             stringList.forEach(string ->
-                System.out.println(Objects.nonNull(string)? string.hashCode() : "null")
+                System.out.println(Objects.nonNull(string)? string.hashCode() : "")
             );
 
         } catch(IllegalStateException ise){
-            System.out.println(ise.getMessage());
+            logger.info(ise.getMessage());
             throw new IllegalStateException(ise);
         }
     }
@@ -64,7 +67,7 @@ public class LocalProcessor {
             return processorName.toString();
 
         } catch(IllegalStateException ise){
-            System.out.println(ise.getMessage());
+            logger.info(ise.getMessage());
             throw new IllegalStateException(ise);
         }
     }
@@ -72,14 +75,14 @@ public class LocalProcessor {
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
         try {
-            if(Objects.isNull(file)) { throw new IllegalStateException("Input is null."); }
+            if(Objects.isNull(file)) { throw new IllegalStateException("File is null."); }
             informationScanner = new Scanner(file);
             while (informationScanner.hasNext()) {
                 processorVersion.append(informationScanner.nextLine());
             }
 
         } catch(IllegalStateException ise){
-            System.out.println(ise.getMessage());
+            logger.info(ise.getMessage());
             throw new IllegalStateException(ise);
         }
     }
