@@ -49,8 +49,10 @@ public class LocalProcessor {
     public void listIterator(List<String> stringList) throws IllegalStateException{
         try {
             if(Objects.isNull(stringList)) { throw new IllegalStateException("Input is null."); }
-            stringList.forEach(string ->
-                System.out.println(Objects.nonNull(string)? string.hashCode() : "")
+            stringList.forEach(string -> {
+                    if (Objects.isNull(string)) { throw new IllegalStateException("String is null."); }
+                    System.out.println(string.hashCode());
+                }
             );
 
         } catch(IllegalStateException ise){
@@ -63,7 +65,11 @@ public class LocalProcessor {
     public String fullNameProcessorGenerator(List<String> stringList) throws IllegalStateException{
         try {
             if(Objects.isNull(stringList)) { throw new IllegalStateException("Input is null."); }
-            stringList.forEach(string -> processorName.append(string).append(" "));
+            stringList.forEach(string -> {
+                    if (Objects.isNull(string)) { throw new IllegalStateException("String is null."); }
+                    processorName.append(string).append(" ");
+                }
+            );
             return processorName.toString();
 
         } catch(IllegalStateException ise){
@@ -75,7 +81,7 @@ public class LocalProcessor {
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
         try(Scanner informationScanner = new Scanner(file)) {
-            if(Objects.isNull(file)) { throw new IllegalStateException("File is null."); }
+            if(Objects.isNull(informationScanner)) { throw new IllegalStateException("File is null."); }
             while (informationScanner.hasNext()) {
                 processorVersion.append(informationScanner.nextLine());
             }
