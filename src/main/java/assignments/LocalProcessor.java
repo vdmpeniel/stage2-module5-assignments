@@ -10,11 +10,10 @@ import java.util.logging.Logger;
 import assignments.annotations.FullNameProcessorGeneratorAnnotation;
 import assignments.annotations.ListIteratorAnnotation;
 import assignments.annotations.ReadFullProcessorNameAnnotation;
-import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
+
 @Setter
 public class LocalProcessor {
     private StringBuilder processorName;
@@ -23,7 +22,6 @@ public class LocalProcessor {
     private Integer valueOfCheap;
     private Scanner informationScanner;
     private List<String> stringArrayList;
-
     private final Logger logger = Logger.getLogger(LocalProcessor.class.getName());
 
     public LocalProcessor(
@@ -80,12 +78,45 @@ public class LocalProcessor {
                 processorVersion.append(informationScanner.nextLine());
             }
 
-        } catch(Exception e){
-            logger.info(e.getMessage());
-            throw new IllegalStateException(e);
-
+        } catch(FileNotFoundException fnfe){
+            logger.info(fnfe.getMessage());
+            throw new IllegalStateException(fnfe);
         }
     }
+
+    public StringBuilder getProcessorName() {
+        return processorName;
+    }
+
+    public Long getPeriod() {
+        return period;
+    }
+
+    public StringBuilder getProcessorVersion() {
+        return processorVersion;
+    }
+
+    public Integer getValueOfCheap() {
+        return valueOfCheap;
+    }
+
+    public Scanner getInformationScanner() {
+        if(Objects.isNull(informationScanner)) { throw new IllegalStateException("File is null."); }
+        return informationScanner;
+    }
+
+    public List<String> getStringArrayList() {
+        return stringArrayList;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+
+
+
+
 
     public static void main(String[] args) {
         LocalProcessor processor = new LocalProcessor();
